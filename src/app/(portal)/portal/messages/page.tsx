@@ -9,7 +9,6 @@ interface Message {
 }
 
 export default function MessagesPage() {
-  const { user } = useUser();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [projectId, setProjectId] = useState<string | null>(null);
