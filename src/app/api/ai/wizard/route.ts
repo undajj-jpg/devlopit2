@@ -2,7 +2,7 @@ import { streamText } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { wizardRateLimit } from "@/lib/rate-limit";
+import { getWizardRateLimit } from "@/lib/rate-limit";
 
 const SYSTEM_PROMPT = `You are the Devlop onboarding assistant. Understand exactly what a client wants to build so a dev team can execute precisely. Ask focused questions one or two at a time, conversationally — not form-like.
 
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { success } = await wizardRateLimit.limit(userId);
+  const { success } = await getWizardRateLimit().limit(userId);
   if (!success) {
     return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
   }

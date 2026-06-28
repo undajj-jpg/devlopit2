@@ -1,28 +1,36 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
-let redis: Redis | null = null;
+let _wizardRateLimit: Ratelimit | null = null;
+let _estimateRateLimit: Ratelimit | null = null;
 
 function getRedis() {
-  if (!redis) {
-    redis = new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL!,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-    });
-  }
-  return redis;
+  return new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL!,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+  });
 }
 
-export const wizardRateLimit = new Ratelimit({
-  redis: getRedis(),
-  limiter: Ratelimit.slidingWindow(30, "10 m"),
-  analytics: true,
-  prefix: "ratelimit:wizard",
-});
+export function getWizardRateLimit() {
+  if (!_wizardRateLimit) {
+    _wizardRateLimit = new Ratelimit({
+      redis: getRedis(),
+      limiter: Ratelimit.slidingWindow(30, "10 m"),
+      analytics: true,
+      prefix: "ratelimit:wizard",
+    });
+  }
+  return _wizardRateLimit;
+}
 
-export const estimateRateLimit = new Ratelimit({
-  redis: getRedis(),
-  limiter: Ratelimit.slidingWindow(20, "10 m"),
-  analytics: true,
-  prefix: "ratelimit:estimate",
-});
+export function getEstimateRateLimit() {
+  if (!_estimateRateLimit) {
+    _estimateRateLimit = new Ratelimit({
+      redis: getRedis(),
+      limiter: Ratelimit.slidingWindow(20, "10 m"),
+      analytics: true,
+      prefix: "ratelimit:estimate",
+    });
+  }
+  return _estimateRateLimit;
+}

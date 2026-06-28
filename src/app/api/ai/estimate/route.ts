@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
-import { estimateRateLimit } from "@/lib/rate-limit";
+import { getEstimateRateLimit } from "@/lib/rate-limit";
 
 const ESTIMATOR_PROMPT = `You are a senior developer estimating effort for change requests on a web project built with Next.js, Tailwind CSS, and Supabase.
 
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { success } = await estimateRateLimit.limit(userId);
+  const { success } = await getEstimateRateLimit().limit(userId);
   if (!success) {
     return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
   }
