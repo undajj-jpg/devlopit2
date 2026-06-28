@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createServiceClient } from "@/lib/supabase/server";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2024-06-20" as any });
 
 const TIER_CREDITS: Record<string, number> = {
@@ -29,11 +29,11 @@ export async function POST(req: Request) {
   }
 
   const supabase = createServiceClient();
+  const obj = event.data.object as any;
 
   switch (event.type) {
     case "invoice.payment_succeeded": {
-      const invoice = event.data.object as any;
-      const subId = invoice.subscription as string;
+      const subId = obj.subscription as string;
 
       const { data: sub } = await supabase
         .from("subscriptions")
@@ -51,11 +51,17 @@ export async function POST(req: Request) {
           description: `Monthly credit grant (${sub.tier})`,
         });
 
+        const { data: project } = await supabase
+          .from("projects")
+          .select("months_paid")
+          .eq("id", sub.project_id)
+          .single();
+
         await supabase
           .from("projects")
           .update({
             status: "active",
-            months_paid: (await supabase.from("projects").select("months_paid").eq("id", sub.project_id).single()).data?.months_paid! + 1,
+            months_paid: (project?.months_paid ?? 0) + 1,
           })
           .eq("id", sub.project_id);
       }
@@ -63,8 +69,7 @@ export async function POST(req: Request) {
     }
 
     case "invoice.payment_failed": {
-      const invoice = event.data.object as any;
-      const subId = invoice.subscription as string;
+      const subId = obj.subscription as string;
 
       const { data: sub } = await supabase
         .from("subscriptions")
@@ -78,7 +83,6 @@ export async function POST(req: Request) {
           .update({ status: "past_due" })
           .eq("id", sub.project_id);
 
-        // Schedule grace period check via audit log (Trigger.dev job picks this up)
         await supabase.from("audit_log").insert({
           project_id: sub.project_id,
           action: "payment_failed_grace_start",
@@ -93,36 +97,33 @@ export async function POST(req: Request) {
     }
 
     case "customer.subscription.updated": {
-      const sub = event.data.object as any;
       await supabase
         .from("subscriptions")
         .update({
-          status: sub.status,
+          status: obj.status,
           current_period_start: new Date(
-            sub.current_period_start * 1000
+            obj.current_period_start * 1000
           ).toISOString(),
           current_period_end: new Date(
-            sub.current_period_end * 1000
+            obj.current_period_end * 1000
           ).toISOString(),
-          cancel_at_period_end: sub.cancel_at_period_end,
+          cancel_at_period_end: obj.cancel_at_period_end,
         })
-        .eq("stripe_subscription_id", sub.id);
+        .eq("stripe_subscription_id", obj.id);
       break;
     }
 
     case "customer.subscription.deleted": {
-      const sub = event.data.object as any;
-
       const { data: dbSub } = await supabase
         .from("subscriptions")
         .select("project_id")
-        .eq("stripe_subscription_id", sub.id)
+        .eq("stripe_subscription_id", obj.id)
         .single();
 
       await supabase
         .from("subscriptions")
         .update({ status: "canceled" })
-        .eq("stripe_subscription_id", sub.id);
+        .eq("stripe_subscription_id", obj.id);
 
       if (dbSub) {
         await supabase
@@ -134,17 +135,10 @@ export async function POST(req: Request) {
     }
 
     case "charge.dispute.created": {
-      const dispute = event.data.object as any;
       const chargeId =
-        typeof dispute.charge === "string"
-          ? dispute.charge
-          : dispute.charge?.id;
-
-      // Find project by customer
+        typeof obj.charge === "string" ? obj.charge : obj.charge?.id;
       const customerId =
-        typeof dispute.customer === "string"
-          ? dispute.customer
-          : (dispute.customer as any)?.id;
+        typeof obj.customer === "string" ? obj.customer : obj.customer?.id;
 
       if (customerId) {
         const { data: org } = await supabase
@@ -168,7 +162,7 @@ export async function POST(req: Request) {
             await supabase.from("audit_log").insert({
               project_id: p.id,
               action: "chargeback_received",
-              payload: { charge_id: chargeId, dispute_id: dispute.id },
+              payload: { charge_id: chargeId, dispute_id: obj.id },
             });
           }
         }
@@ -177,11 +171,8 @@ export async function POST(req: Request) {
     }
 
     case "charge.refunded": {
-      const charge = event.data.object as any;
       const customerId =
-        typeof charge.customer === "string"
-          ? charge.customer
-          : (charge.customer as any)?.id;
+        typeof obj.customer === "string" ? obj.customer : obj.customer?.id;
 
       if (customerId) {
         const { data: org } = await supabase
@@ -202,7 +193,7 @@ export async function POST(req: Request) {
               project_id: projects[0].id,
               type: "refund",
               amount: 0,
-              description: `Refund processed for charge ${charge.id}`,
+              description: `Refund processed for charge ${obj.id}`,
             });
           }
         }

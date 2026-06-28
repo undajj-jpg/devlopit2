@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
-import { useUser } from "@clerk/nextjs";
-
 interface Message {
   id: string;
   body: string;
