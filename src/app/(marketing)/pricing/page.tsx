@@ -44,11 +44,11 @@ const tiers = [
 ];
 
 const creditCosts = [
-  { action: "Small UI change", credits: 1 },
-  { action: "New page or section", credits: 2 },
-  { action: "Feature addition", credits: "3-5" },
-  { action: "Integration (API, payment, auth)", credits: "3-5" },
-  { action: "Major feature or redesign", credits: "5-10" },
+  { action: "Small UI change", credits: "1", icon: "🎨" },
+  { action: "New page or section", credits: "2", icon: "📄" },
+  { action: "Feature addition", credits: "3-5", icon: "⚡" },
+  { action: "Integration (API, payment, auth)", credits: "3-5", icon: "🔗" },
+  { action: "Major feature or redesign", credits: "5-10", icon: "🏗️" },
 ];
 
 const faqs = [
@@ -84,228 +84,202 @@ const faqs = [
   },
 ];
 
+const Check = () => (
+  <svg className="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+  </svg>
+);
+
+const Dash = () => (
+  <span className="text-slate-300">—</span>
+);
+
 export default function PricingPage() {
   return (
-    <div className="py-16 px-6">
+    <div>
       {/* Header */}
-      <div className="max-w-4xl mx-auto text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-          Simple, Transparent Pricing
-        </h1>
-        <p className="text-lg text-foreground/60 max-w-2xl mx-auto">
-          Every plan includes a fully deployed application, managed hosting, and
-          ongoing support. Choose the tier that fits your needs.
-        </p>
-      </div>
+      <section className="py-20 px-6 gradient-hero">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-sm font-semibold text-indigo-600 uppercase tracking-wider mb-3">Pricing</p>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+            Simple, transparent pricing
+          </h1>
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
+            Every plan includes a fully deployed application, managed hosting, and
+            ongoing support. Choose the tier that fits your needs.
+          </p>
+        </div>
+      </section>
 
       {/* Tier Cards */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
-        {tiers.map((tier) => (
-          <div
-            key={tier.name}
-            className={`rounded-2xl border p-8 flex flex-col ${
-              tier.popular
-                ? "border-foreground/30 bg-foreground/[0.03] ring-1 ring-foreground/10"
-                : "border-foreground/10"
-            }`}
-          >
-            {tier.popular && (
-              <span className="text-xs font-semibold uppercase tracking-wider text-foreground/60 mb-4">
-                Most Popular
-              </span>
-            )}
-            <h3 className="text-2xl font-bold">{tier.name}</h3>
-            <div className="mt-4 mb-2">
-              <span className="text-4xl font-bold">{tier.price}</span>
-              <span className="text-foreground/60">/mo</span>
-            </div>
-            <p className="text-sm text-foreground/60 mb-8">
-              {tier.description}
-            </p>
-            <Link
-              href="/sign-up"
-              className={`text-center py-3 rounded-lg font-medium text-sm transition-colors mb-8 ${
+      <section className="px-6 -mt-4">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+          {tiers.map((tier) => (
+            <div
+              key={tier.name}
+              className={`relative rounded-2xl p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 ${
                 tier.popular
-                  ? "bg-foreground text-background hover:opacity-90"
-                  : "border border-foreground/20 hover:bg-foreground/5"
+                  ? "bg-white shadow-2xl shadow-indigo-500/10 ring-2 ring-indigo-500"
+                  : "bg-white border border-slate-200 hover:shadow-xl"
               }`}
             >
-              Get Started
-            </Link>
-            <ul className="space-y-3 flex-1">
-              <li className="text-sm text-foreground/80">
-                <span className="text-foreground/40">--</span> {tier.credits}{" "}
-                credits / month
-              </li>
-              <li className="text-sm text-foreground/80">
-                <span className="text-foreground/40">--</span> {tier.projects}{" "}
-                active project{tier.projects !== "1" ? "s" : ""}
-              </li>
-              <li className="text-sm text-foreground/80">
-                <span className="text-foreground/40">--</span> {tier.support}{" "}
-                support
-              </li>
-              <li className="text-sm text-foreground/80">
-                <span className="text-foreground/40">--</span> {tier.analytics}{" "}
-                analytics
-              </li>
-              {tier.customDomain && (
-                <li className="text-sm text-foreground/80">
-                  <span className="text-foreground/40">--</span> Custom domain
-                </li>
+              {tier.popular && (
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                  <span className="gradient-primary text-white text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full">
+                    Most Popular
+                  </span>
+                </div>
               )}
-              {tier.priorityQueue && (
-                <li className="text-sm text-foreground/80">
-                  <span className="text-foreground/40">--</span> Priority build
-                  queue
-                </li>
-              )}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      {/* Comparison Table */}
-      <div className="max-w-4xl mx-auto mb-24">
-        <h2 className="text-2xl font-bold text-center mb-8">
-          Plan Comparison
-        </h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-foreground/10">
-                <th className="text-left py-3 pr-4 font-medium text-foreground/60">
-                  Feature
-                </th>
-                <th className="text-center py-3 px-4 font-medium">Starter</th>
-                <th className="text-center py-3 px-4 font-medium">Growth</th>
-                <th className="text-center py-3 px-4 font-medium">Scale</th>
-              </tr>
-            </thead>
-            <tbody className="text-foreground/80">
-              <tr className="border-b border-foreground/5">
-                <td className="py-3 pr-4">Monthly price</td>
-                <td className="text-center py-3 px-4">$99</td>
-                <td className="text-center py-3 px-4">$299</td>
-                <td className="text-center py-3 px-4">$799</td>
-              </tr>
-              <tr className="border-b border-foreground/5">
-                <td className="py-3 pr-4">Credits / month</td>
-                <td className="text-center py-3 px-4">5</td>
-                <td className="text-center py-3 px-4">20</td>
-                <td className="text-center py-3 px-4">50</td>
-              </tr>
-              <tr className="border-b border-foreground/5">
-                <td className="py-3 pr-4">Active projects</td>
-                <td className="text-center py-3 px-4">1</td>
-                <td className="text-center py-3 px-4">3</td>
-                <td className="text-center py-3 px-4">Unlimited</td>
-              </tr>
-              <tr className="border-b border-foreground/5">
-                <td className="py-3 pr-4">Support</td>
-                <td className="text-center py-3 px-4">Standard</td>
-                <td className="text-center py-3 px-4">Priority</td>
-                <td className="text-center py-3 px-4">Dedicated</td>
-              </tr>
-              <tr className="border-b border-foreground/5">
-                <td className="py-3 pr-4">Analytics</td>
-                <td className="text-center py-3 px-4">Basic</td>
-                <td className="text-center py-3 px-4">Advanced</td>
-                <td className="text-center py-3 px-4">Full suite</td>
-              </tr>
-              <tr className="border-b border-foreground/5">
-                <td className="py-3 pr-4">Custom domain</td>
-                <td className="text-center py-3 px-4">--</td>
-                <td className="text-center py-3 px-4">Yes</td>
-                <td className="text-center py-3 px-4">Yes</td>
-              </tr>
-              <tr className="border-b border-foreground/5">
-                <td className="py-3 pr-4">Priority build queue</td>
-                <td className="text-center py-3 px-4">--</td>
-                <td className="text-center py-3 px-4">--</td>
-                <td className="text-center py-3 px-4">Yes</td>
-              </tr>
-              <tr>
-                <td className="py-3 pr-4">Code buyout eligible</td>
-                <td className="text-center py-3 px-4">After 12 mo</td>
-                <td className="text-center py-3 px-4">After 12 mo</td>
-                <td className="text-center py-3 px-4">After 12 mo</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Credit Cost Reference */}
-      <div className="max-w-4xl mx-auto mb-24">
-        <h2 className="text-2xl font-bold text-center mb-8">
-          Credit Cost Reference
-        </h2>
-        <p className="text-center text-foreground/60 mb-8 text-sm">
-          Credits are used for changes and updates to your application after
-          initial delivery.
-        </p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-foreground/10">
-                <th className="text-left py-3 pr-4 font-medium text-foreground/60">
-                  Action
-                </th>
-                <th className="text-right py-3 pl-4 font-medium text-foreground/60">
-                  Credits
-                </th>
-              </tr>
-            </thead>
-            <tbody className="text-foreground/80">
-              {creditCosts.map((item) => (
-                <tr
-                  key={item.action}
-                  className="border-b border-foreground/5"
-                >
-                  <td className="py-3 pr-4">{item.action}</td>
-                  <td className="text-right py-3 pl-4">{item.credits}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* FAQ */}
-      <div className="max-w-3xl mx-auto mb-16">
-        <h2 className="text-2xl font-bold text-center mb-8">
-          Frequently Asked Questions
-        </h2>
-        <div className="space-y-6">
-          {faqs.map((faq) => (
-            <div
-              key={faq.question}
-              className="border-b border-foreground/10 pb-6"
-            >
-              <h3 className="font-semibold mb-2">{faq.question}</h3>
-              <p className="text-sm text-foreground/60 leading-relaxed">
-                {faq.answer}
-              </p>
+              <h3 className="text-xl font-bold">{tier.name}</h3>
+              <div className="mt-4 mb-2">
+                <span className="text-5xl font-extrabold">{tier.price}</span>
+                <span className="text-slate-400 font-medium">/mo</span>
+              </div>
+              <p className="text-sm text-slate-500 mb-8">{tier.description}</p>
+              <Link
+                href="/sign-up"
+                className={`text-center py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 mb-8 cursor-pointer ${
+                  tier.popular
+                    ? "gradient-primary text-white hover:shadow-lg hover:shadow-indigo-500/25"
+                    : "bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200"
+                }`}
+              >
+                Get Started
+              </Link>
+              <ul className="space-y-3 flex-1">
+                {[
+                  `${tier.credits} credits / month`,
+                  `${tier.projects} active project${tier.projects !== "1" ? "s" : ""}`,
+                  `${tier.support} support`,
+                  `${tier.analytics} analytics`,
+                  ...(tier.customDomain ? ["Custom domain"] : []),
+                  ...(tier.priorityQueue ? ["Priority build queue"] : []),
+                ].map((feature) => (
+                  <li key={feature} className="text-sm text-slate-600 flex items-center gap-3">
+                    <Check />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
-      </div>
+      </section>
+
+      {/* Comparison Table */}
+      <section className="py-16 px-6 bg-slate-50">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-extrabold text-center mb-10">Plan Comparison</h2>
+          <div className="overflow-x-auto bg-white rounded-2xl border border-slate-200 shadow-sm">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-slate-100">
+                  <th className="text-left py-4 px-6 font-medium text-slate-400">Feature</th>
+                  <th className="text-center py-4 px-6 font-bold text-slate-900">Starter</th>
+                  <th className="text-center py-4 px-6 font-bold text-indigo-600">Growth</th>
+                  <th className="text-center py-4 px-6 font-bold text-slate-900">Scale</th>
+                </tr>
+              </thead>
+              <tbody className="text-slate-600">
+                {[
+                  ["Monthly price", "$99", "$299", "$799"],
+                  ["Credits / month", "5", "20", "50"],
+                  ["Active projects", "1", "3", "Unlimited"],
+                  ["Support", "Standard", "Priority", "Dedicated"],
+                  ["Analytics", "Basic", "Advanced", "Full suite"],
+                ].map(([feature, ...values]) => (
+                  <tr key={feature} className="border-b border-slate-50">
+                    <td className="py-3.5 px-6 font-medium text-slate-500">{feature}</td>
+                    {values.map((v, i) => (
+                      <td key={i} className="text-center py-3.5 px-6">{v}</td>
+                    ))}
+                  </tr>
+                ))}
+                {[
+                  ["Custom domain", false, true, true],
+                  ["Priority build queue", false, false, true],
+                ].map(([feature, ...values]) => (
+                  <tr key={feature as string} className="border-b border-slate-50">
+                    <td className="py-3.5 px-6 font-medium text-slate-500">{feature as string}</td>
+                    {(values as boolean[]).map((v, i) => (
+                      <td key={i} className="text-center py-3.5 px-6">{v ? <Check /> : <Dash />}</td>
+                    ))}
+                  </tr>
+                ))}
+                <tr>
+                  <td className="py-3.5 px-6 font-medium text-slate-500">Code buyout eligible</td>
+                  <td className="text-center py-3.5 px-6">After 12 mo</td>
+                  <td className="text-center py-3.5 px-6">After 12 mo</td>
+                  <td className="text-center py-3.5 px-6">After 12 mo</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* Credit Cost Reference */}
+      <section className="py-16 px-6">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-sm font-semibold text-indigo-600 uppercase tracking-wider mb-3">Credits</p>
+            <h2 className="text-2xl font-extrabold">Credit Cost Reference</h2>
+            <p className="text-slate-500 mt-2 text-sm">
+              Credits are used for changes and updates to your application after initial delivery.
+            </p>
+          </div>
+          <div className="grid gap-3">
+            {creditCosts.map((item) => (
+              <div key={item.action} className="flex items-center justify-between bg-slate-50 rounded-xl px-6 py-4 border border-slate-100">
+                <span className="text-sm font-medium text-slate-700">{item.action}</span>
+                <span className="text-sm font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg">{item.credits} credits</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-16 px-6 bg-slate-50">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-sm font-semibold text-indigo-600 uppercase tracking-wider mb-3">FAQ</p>
+            <h2 className="text-2xl font-extrabold">Frequently Asked Questions</h2>
+          </div>
+          <div className="space-y-4">
+            {faqs.map((faq) => (
+              <div key={faq.question} className="bg-white rounded-xl border border-slate-200 p-6">
+                <h3 className="font-bold text-slate-900 mb-2">{faq.question}</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">{faq.answer}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* CTA */}
-      <div className="max-w-2xl mx-auto text-center">
-        <h2 className="text-2xl font-bold mb-4">Ready to get started?</h2>
-        <p className="text-foreground/60 mb-8">
-          Pick a plan and describe your project. We&apos;ll have it deployed in
-          10 days.
-        </p>
-        <Link
-          href="/sign-up"
-          className="inline-block bg-foreground text-background px-8 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity text-sm"
-        >
-          Start Your Project
-        </Link>
-      </div>
+      <section className="py-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="gradient-primary rounded-3xl px-8 py-16 md:px-16 text-center relative overflow-hidden">
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div className="absolute -top-20 -right-20 w-60 h-60 bg-white/10 rounded-full blur-2xl" />
+              <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-white/5 rounded-full blur-2xl" />
+            </div>
+            <div className="relative">
+              <h2 className="text-3xl font-extrabold text-white mb-4">Ready to get started?</h2>
+              <p className="text-indigo-100 mb-8 max-w-lg mx-auto">
+                Pick a plan and describe your project. We&apos;ll have it deployed in 10 days.
+              </p>
+              <Link
+                href="/sign-up"
+                className="inline-block bg-white text-indigo-600 px-8 py-4 rounded-2xl font-bold hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
+              >
+                Start Your Project
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

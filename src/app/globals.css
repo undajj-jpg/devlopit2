@@ -2,26 +2,95 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0F172A;
+  --primary: #4F46E5;
+  --primary-light: #818CF8;
+  --secondary: #7C3AED;
+  --accent: #22C55E;
+  --muted: #64748B;
+  --surface: #F8FAFC;
+  --border: #E2E8F0;
+  --destructive: #EF4444;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0F172A;
+    --foreground: #F8FAFC;
+    --surface: #1E293B;
+    --border: #334155;
+    --muted: #94A3B8;
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@layer base {
+  * {
+    @apply border-[var(--border)];
+  }
+}
+
+.gradient-primary {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+}
+
+.gradient-hero {
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(79, 70, 229, 0.15), transparent),
+              radial-gradient(ellipse 60% 40% at 80% 50%, rgba(124, 58, 237, 0.08), transparent);
+}
+
+.gradient-hero-dark {
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(79, 70, 229, 0.3), transparent),
+              radial-gradient(ellipse 60% 40% at 80% 50%, rgba(124, 58, 237, 0.15), transparent);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass-card {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 20px rgba(79, 70, 229, 0.2); }
+  to { box-shadow: 0 0 30px rgba(124, 58, 237, 0.4); }
 }

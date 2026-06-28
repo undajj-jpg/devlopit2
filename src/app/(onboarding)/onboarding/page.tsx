@@ -143,11 +143,15 @@ export default function OnboardingPage() {
 
   if (submitted) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-950 text-white">
-        <div className="max-w-md text-center space-y-4">
-          <div className="text-5xl">&#10003;</div>
-          <h1 className="text-2xl font-bold">Brief Submitted!</h1>
-          <p className="text-gray-400">
+      <div className="flex min-h-screen items-center justify-center bg-[#0B1120] text-white">
+        <div className="max-w-md text-center space-y-6">
+          <div className="w-20 h-20 rounded-2xl gradient-primary flex items-center justify-center mx-auto animate-glow">
+            <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>
+          </div>
+          <h1 className="text-3xl font-extrabold">Brief Submitted!</h1>
+          <p className="text-slate-400 leading-relaxed">
             Your project is being reviewed and built. We&apos;ll email you when
             it&apos;s live. This typically takes up to 10 days.
           </p>
@@ -157,20 +161,33 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-950 text-white">
-      <header className="border-b border-gray-800 px-6 py-4">
-        <h1 className="text-xl font-bold">
-          Devlop — Tell us what you want to build
-        </h1>
+    <div className="flex min-h-screen flex-col bg-[#0B1120] text-white">
+      <header className="border-b border-white/[0.06] px-6 py-4 bg-[#0B1120]/80 backdrop-blur-xl">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
+            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
+            </svg>
+          </div>
+          <h1 className="text-lg font-bold">
+            <span className="gradient-text">Devlop</span>
+            <span className="text-slate-500 font-normal ml-2">AI Project Assistant</span>
+          </h1>
+        </div>
       </header>
 
       <div className="flex flex-1 flex-col lg:flex-row">
         <div className="flex flex-1 flex-col">
           <div className="flex-1 overflow-y-auto p-6 space-y-4">
             {messages.length === 0 && (
-              <div className="text-gray-500 text-center mt-20">
-                <p className="text-lg">Hi! I&apos;m your Devlop assistant.</p>
-                <p>Tell me about the project you want to build.</p>
+              <div className="text-center mt-20 space-y-4">
+                <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center mx-auto">
+                  <svg className="w-8 h-8 text-indigo-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
+                  </svg>
+                </div>
+                <p className="text-lg text-slate-300 font-medium">Hi! I&apos;m your Devlop assistant.</p>
+                <p className="text-slate-500">Tell me about the project you want to build.</p>
               </div>
             )}
             {messages.map((m) => (
@@ -179,23 +196,23 @@ export default function OnboardingPage() {
                 className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-lg px-4 py-3 ${
+                  className={`max-w-[80%] rounded-2xl px-5 py-3.5 ${
                     m.role === "user"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-800 text-gray-100"
+                      ? "gradient-primary text-white"
+                      : "bg-[#131B2E] border border-white/[0.06] text-slate-200"
                   }`}
                 >
-                  <p className="whitespace-pre-wrap text-sm">{m.content}</p>
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed">{m.content}</p>
                 </div>
               </div>
             ))}
             {isLoading && messages[messages.length - 1]?.role === "user" && (
               <div className="flex justify-start">
-                <div className="bg-gray-800 rounded-lg px-4 py-3">
-                  <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]" />
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]" />
+                <div className="bg-[#131B2E] border border-white/[0.06] rounded-2xl px-5 py-4">
+                  <div className="flex space-x-1.5">
+                    <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" />
+                    <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce [animation-delay:0.15s]" />
+                    <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce [animation-delay:0.3s]" />
                   </div>
                 </div>
               </div>
@@ -205,19 +222,19 @@ export default function OnboardingPage() {
 
           <form
             onSubmit={handleSubmitMessage}
-            className="border-t border-gray-800 p-4 flex gap-3"
+            className="border-t border-white/[0.06] p-4 flex gap-3"
           >
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Describe your project..."
-              className="flex-1 rounded-lg border border-gray-700 bg-gray-900 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+              className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500/50 focus:outline-none focus:ring-1 focus:ring-indigo-500/25 transition-all"
               disabled={isLoading || !!brief}
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim() || !!brief}
-              className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded-xl gradient-primary px-6 py-3.5 text-sm font-semibold text-white hover:shadow-lg hover:shadow-indigo-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
             >
               Send
             </button>
@@ -225,70 +242,89 @@ export default function OnboardingPage() {
         </div>
 
         {brief && (
-          <div className="w-full lg:w-[450px] border-t lg:border-t-0 lg:border-l border-gray-800 p-6 overflow-y-auto">
-            <h2 className="text-lg font-bold mb-4">Your Project Brief</h2>
-            <div className="space-y-4 text-sm">
-              <div>
-                <span className="text-gray-400">Project:</span>{" "}
-                <span className="font-medium">{brief.project_name}</span>
+          <div className="w-full lg:w-[450px] border-t lg:border-t-0 lg:border-l border-white/[0.06] p-6 overflow-y-auto bg-[#0D1425]">
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                </svg>
               </div>
-              <div>
-                <span className="text-gray-400">Recommended Tier:</span>{" "}
-                <span className="inline-block rounded bg-blue-600/20 px-2 py-0.5 text-blue-400 font-medium capitalize">
-                  {brief.tier_recommendation}
-                </span>
+              <h2 className="text-lg font-bold">Your Project Brief</h2>
+            </div>
+            <div className="space-y-5 text-sm">
+              <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
+                <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Project</span>
+                <p className="font-bold text-white mt-1">{brief.project_name}</p>
               </div>
-              <div>
-                <span className="text-gray-400">Industry:</span>{" "}
-                {brief.industry}
+              <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
+                <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Recommended Tier</span>
+                <p className="mt-1">
+                  <span className="inline-block rounded-lg gradient-primary px-3 py-1 text-white font-semibold text-xs capitalize">
+                    {brief.tier_recommendation}
+                  </span>
+                </p>
               </div>
-              <div>
-                <span className="text-gray-400">Target Users:</span>{" "}
-                {brief.target_users}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
+                  <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Industry</span>
+                  <p className="text-white mt-1">{brief.industry}</p>
+                </div>
+                <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
+                  <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Target Users</span>
+                  <p className="text-white mt-1">{brief.target_users}</p>
+                </div>
               </div>
-              <div>
-                <span className="text-gray-400">Core Features:</span>
-                <ul className="mt-1 list-disc list-inside text-gray-300">
+              <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
+                <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Core Features</span>
+                <ul className="mt-2 space-y-2">
                   {brief.core_features.map((f, i) => (
-                    <li key={i}>{f}</li>
+                    <li key={i} className="flex items-center gap-2 text-slate-300">
+                      <svg className="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                      </svg>
+                      {f}
+                    </li>
                   ))}
                 </ul>
               </div>
               {brief.tech_requirements.length > 0 && (
-                <div>
-                  <span className="text-gray-400">Tech Requirements:</span>
-                  <ul className="mt-1 list-disc list-inside text-gray-300">
+                <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
+                  <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Tech Requirements</span>
+                  <ul className="mt-2 space-y-2">
                     {brief.tech_requirements.map((t, i) => (
-                      <li key={i}>{t}</li>
+                      <li key={i} className="flex items-center gap-2 text-slate-300">
+                        <svg className="w-4 h-4 text-violet-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                        </svg>
+                        {t}
+                      </li>
                     ))}
                   </ul>
                 </div>
               )}
-              <div>
-                <span className="text-gray-400">Style:</span>{" "}
-                {brief.style_notes}
-              </div>
-              <div>
-                <span className="text-gray-400">Pages:</span>{" "}
-                {brief.estimated_pages.join(", ")}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
+                  <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Style</span>
+                  <p className="text-slate-300 mt-1">{brief.style_notes}</p>
+                </div>
+                <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
+                  <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Pages</span>
+                  <p className="text-slate-300 mt-1">{brief.estimated_pages.join(", ")}</p>
+                </div>
               </div>
 
-              <hr className="border-gray-700" />
+              <hr className="border-white/[0.06]" />
 
-              <label className="flex items-start gap-3 cursor-pointer">
+              <label className="flex items-start gap-3 cursor-pointer group">
                 <input
                   type="checkbox"
                   checked={agreed}
                   onChange={(e) => setAgreed(e.target.checked)}
-                  className="mt-1 h-4 w-4 rounded border-gray-600"
+                  className="mt-0.5 h-4 w-4 rounded border-slate-600 accent-indigo-500"
                 />
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-slate-500 group-hover:text-slate-400 transition-colors">
                   I agree to the{" "}
-                  <a
-                    href="/msa"
-                    className="text-blue-400 underline"
-                    target="_blank"
-                  >
+                  <a href="/msa" className="text-indigo-400 hover:text-indigo-300 underline" target="_blank">
                     Master Service Agreement
                   </a>{" "}
                   and understand I do not own the software until a 12-month
@@ -300,7 +336,7 @@ export default function OnboardingPage() {
               <button
                 onClick={handleApprove}
                 disabled={!agreed || submitting}
-                className="w-full rounded-lg bg-green-600 py-3 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full rounded-xl gradient-primary py-3.5 text-sm font-semibold text-white hover:shadow-lg hover:shadow-indigo-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
               >
                 {submitting ? "Submitting..." : "Approve & Start Build"}
               </button>

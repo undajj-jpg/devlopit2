@@ -22,11 +22,11 @@ import type { Database } from "@/types/database";
 type ChangeRequest = Database["public"]["Tables"]["change_requests"]["Row"];
 type KanbanColumn = "backlog" | "in_review" | "in_progress" | "done";
 
-const COLUMNS: { id: KanbanColumn; label: string }[] = [
-  { id: "backlog", label: "Backlog" },
-  { id: "in_review", label: "In Review" },
-  { id: "in_progress", label: "In Progress" },
-  { id: "done", label: "Done" },
+const COLUMNS: { id: KanbanColumn; label: string; color: string }[] = [
+  { id: "backlog", label: "Backlog", color: "text-slate-400" },
+  { id: "in_review", label: "In Review", color: "text-amber-400" },
+  { id: "in_progress", label: "In Progress", color: "text-indigo-400" },
+  { id: "done", label: "Done", color: "text-emerald-400" },
 ];
 
 function Card({ cr }: { cr: ChangeRequest }) {
@@ -39,9 +39,9 @@ function Card({ cr }: { cr: ChangeRequest }) {
   };
 
   const complexityColors: Record<string, string> = {
-    low: "bg-green-900/30 text-green-400",
-    medium: "bg-yellow-900/30 text-yellow-400",
-    high: "bg-red-900/30 text-red-400",
+    low: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    medium: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+    high: "bg-red-500/10 text-red-400 border-red-500/20",
   };
 
   const complexity =
@@ -53,25 +53,26 @@ function Card({ cr }: { cr: ChangeRequest }) {
       style={style}
       {...attributes}
       {...listeners}
-      className="bg-gray-800 border border-gray-700 rounded-lg p-3 cursor-grab active:cursor-grabbing space-y-2"
+      className="bg-[#131B2E] border border-white/[0.06] rounded-xl p-4 cursor-grab active:cursor-grabbing space-y-3 hover:border-indigo-500/20 transition-colors duration-200 group"
     >
-      <div className="text-sm font-medium">{cr.title}</div>
-      <div className="flex items-center gap-2 text-xs">
+      <div className="text-sm font-semibold text-white/90 group-hover:text-white transition-colors">{cr.title}</div>
+      <div className="flex items-center gap-2">
         {cr.credit_cost != null && (
-          <span className="bg-blue-900/30 text-blue-400 px-2 py-0.5 rounded">
+          <span className="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2.5 py-1 rounded-lg font-medium">
             {cr.credit_cost} credits
           </span>
         )}
         {complexity && (
-          <span
-            className={`px-2 py-0.5 rounded ${complexityColors[complexity] ?? "bg-gray-700"}`}
-          >
+          <span className={`text-xs px-2.5 py-1 rounded-lg border font-medium ${complexityColors[complexity] ?? "bg-white/5 border-white/10"}`}>
             {complexity}
           </span>
         )}
       </div>
       {cr.status === "pending_approval" && (
-        <span className="text-xs text-yellow-400">Awaiting approval</span>
+        <div className="flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
+          <span className="text-xs text-amber-400 font-medium">Awaiting approval</span>
+        </div>
       )}
     </div>
   );
@@ -204,9 +205,9 @@ export default function KanbanPage() {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-64 bg-gray-800 rounded-lg animate-pulse" />
+          <div key={i} className="h-64 bg-white/[0.02] border border-white/[0.06] rounded-2xl animate-pulse" />
         ))}
       </div>
     );
@@ -215,43 +216,46 @@ export default function KanbanPage() {
   const activeCard = cards.find((c) => c.id === activeId);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Change Requests</h1>
+        <div>
+          <h1 className="text-2xl font-extrabold">Change Requests</h1>
+          <p className="text-sm text-slate-500 mt-1">Drag cards between columns to update status</p>
+        </div>
         <button
           onClick={() => setShowNewForm(!showNewForm)}
-          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium hover:bg-blue-700"
+          className="rounded-xl gradient-primary px-5 py-2.5 text-sm font-semibold hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
         >
           Request a Change
         </button>
       </div>
 
       {showNewForm && (
-        <div className="bg-gray-900 border border-gray-800 rounded-lg p-4 space-y-3">
+        <div className="bg-[#131B2E] border border-white/[0.06] rounded-2xl p-6 space-y-4">
           <input
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
             placeholder="What do you want to change?"
-            className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white placeholder-gray-500"
+            className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-indigo-500/50 focus:outline-none focus:ring-1 focus:ring-indigo-500/25 transition-all"
           />
           <textarea
             value={newDesc}
             onChange={(e) => setNewDesc(e.target.value)}
             placeholder="Describe the change in detail..."
             rows={4}
-            className="w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white placeholder-gray-500"
+            className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-indigo-500/50 focus:outline-none focus:ring-1 focus:ring-indigo-500/25 transition-all resize-none"
           />
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <button
               onClick={handleSubmitRequest}
               disabled={estimating || !newTitle.trim() || !newDesc.trim()}
-              className="rounded bg-green-600 px-4 py-2 text-sm font-medium hover:bg-green-700 disabled:opacity-50"
+              className="rounded-xl gradient-primary px-5 py-2.5 text-sm font-semibold hover:shadow-lg hover:shadow-indigo-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
             >
               {estimating ? "Estimating..." : "Submit & Get Estimate"}
             </button>
             <button
               onClick={() => setShowNewForm(false)}
-              className="rounded bg-gray-700 px-4 py-2 text-sm hover:bg-gray-600"
+              className="rounded-xl bg-white/[0.04] border border-white/[0.08] px-5 py-2.5 text-sm font-medium hover:bg-white/[0.08] transition-all cursor-pointer"
             >
               Cancel
             </button>
@@ -273,13 +277,20 @@ export default function KanbanPage() {
             return (
               <div
                 key={col.id}
-                className="bg-gray-900/50 border border-gray-800 rounded-lg p-3"
+                className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-4"
               >
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-medium text-gray-300">
-                    {col.label}
-                  </h3>
-                  <span className="text-xs text-gray-500">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full ${
+                      col.id === "backlog" ? "bg-slate-400" :
+                      col.id === "in_review" ? "bg-amber-400" :
+                      col.id === "in_progress" ? "bg-indigo-400" : "bg-emerald-400"
+                    }`} />
+                    <h3 className={`text-sm font-semibold ${col.color}`}>
+                      {col.label}
+                    </h3>
+                  </div>
+                  <span className="text-xs text-slate-600 bg-white/[0.04] px-2 py-0.5 rounded-md font-medium">
                     {columnCards.length}
                   </span>
                 </div>
@@ -287,7 +298,7 @@ export default function KanbanPage() {
                   items={columnCards.map((c) => c.id)}
                   strategy={verticalListSortingStrategy}
                 >
-                  <div className="space-y-2 min-h-[100px]" id={col.id}>
+                  <div className="space-y-3 min-h-[120px]" id={col.id}>
                     {columnCards.map((cr) => (
                       <Card key={cr.id} cr={cr} />
                     ))}
